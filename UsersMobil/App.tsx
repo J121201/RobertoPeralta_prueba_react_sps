@@ -46,8 +46,6 @@ export default class Listado extends React.Component {
   }
 }
 
-//<Text style={styles.container}>
-//{"\n"}{item.id} {item.first_name} {item.last_name}</Text>
 
 const styles = StyleSheet.create({
   container: {
