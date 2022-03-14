@@ -1,54 +1,59 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import {
-  Linking,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import React from "react";
+import { Text, View, FlatList, Image, StyleSheet } from 'react-native'
 
 
+export default class Listado extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      usuarios: [],
+      url: 'https://reqres.in/api/users/'
+    }
+  }
+  componentDidMount() {
+    this.getUsuarios();
+  }
+  getUsuarios = () => {
+    this.setState({ loading: true })
+
+    fetch(this.state.url)
+      .then(res => res.json())
+      .then(res => {
+
+        this.setState({
+          usuarios: res.data,
+        })
+      });
+  };
+  render() {
+    return (
+      <View>
+
+        <FlatList
+
+          data={this.state.usuarios}
+          renderItem={
+            ({ item }) =>
+              <Text style={styles.container}>
+              {"\n"}{item.id} {item.first_name} {item.last_name}</Text>
+          }
+        />
+      </View>
+    );
 
 
-const App = () => {
+  }
+}
 
-  const [usuarios, setUsuarios] = useState([]);
-
-  useEffect(() => {
-    const DatosConsulta = async () => {
-      const {data}: any = await axios.get(
-        'https://reqres.in/api/users',
-      );
-      setUsuarios(data);
-    };
-    DatosConsulta();
-  }, []);
-  
-
-  return (
-   <View>
-     <TouchableOpacity>
-     <Text>Passa</Text>
-     </TouchableOpacity>
-   </View>
-  );
-};
+//<Text style={styles.container}>
+//{"\n"}{item.id} {item.first_name} {item.last_name}</Text>
 
 const styles = StyleSheet.create({
-  
-});
-
-export default App;
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 20,
+  }
+})
